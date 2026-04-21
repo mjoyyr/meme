@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Sound Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0d1117;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Anton', sans-serif;
+            overflow: hidden;
+        }
+
+        .board-container {
+            display: grid;
+            grid-template-columns: repeat(2, 250px);
+            grid-template-rows: repeat(2, 250px);
+            gap: 0; 
+            border: none;
+            background-color: transparent;
+        }
+
+        .card {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.2s;
+        }
+
+        .card:hover {
+            opacity: 0.9;
+        }
+
+        .card::after {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            color: white;
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            line-height: 1;
+            z-index: 2;
+            text-shadow: 
+                2px 2px 0 #000, -2px -2px 0 #000, 
+                2px -2px 0 #000, -2px 2px 0 #000,
+                0 2px 0 #000, 0 -2px 0 #000,
+                2px 0 0 #000, -2px 0 0 #000;
+        }
+
+        .card:nth-child(1)::after { content: "HINDI KO KAYO IME-MEET TODAY GUYS"; }
+        .card:nth-child(2)::after { content: "YESS!!"; }
+        .card:nth-child(3)::after { content: "BE READY NA LANG SA LONG QUIZ NEXT MEETING"; }
+        .card:nth-child(4)::after { content: "..."; }
+
+        #card1 { background-image: url('https://i.imgur.com/UZK10nH.png'); }
+        #card2 { background-image: url('https://i.imgur.com/ieoDCIp.jpeg'); }
+        #card3 { background-image: url('https://i.imgur.com/3tBQriH.png'); }
+        #card4 { background-image: url('https://i.imgur.com/lyAgv6X.jpeg'); }
+
+        .overlay {
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .overlay img {
+            width: 250px;
+            filter: drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.6));
+        }
+    </style>
+</head>
+<body>
+
+    <div id="happyCatOverlay" class="overlay">
+        <img src="https://i.imgur.com/GnpeIVl.gif" alt="Happy Cat">
+    </div>
+
+    <div id="huhCatOverlay" class="overlay">
+        <img src="https://i.imgur.com/W6qikrs.gif" alt="Huh Cat">
+    </div>
+
+    <div class="board-container">
+        <div class="card" id="card1" onclick="play('audio1')"></div>
+        <div class="card" id="card2" onclick="play('audio2')"></div>
+        <div class="card" id="card3" onclick="play('audio3')"></div>
+        <div class="card" id="card4" onclick="play('audio4')"></div>
+    </div>
+
+    <audio id="audio1" src="sounds/sound1.mp3"></audio>
+    <audio id="audio2" src="C:\Users\LENOVO\OneDrive\meme\uiiiiiiii.mp3"></audio>
+    <audio id="audio3" src="sounds/sound3.mp3"></audio>
+    <audio id="audio4" src="C:\Users\LENOVO\OneDrive\meme\ceeday-huh-sound-effect.mp3"></audio>
+
+    <script>
+        function play(id) {
+            const happyGif = document.getElementById('happyCatOverlay');
+            const huhGif = document.getElementById('huhCatOverlay');
+            
+            document.querySelectorAll('audio').forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
+            happyGif.style.display = "none";
+            huhGif.style.display = "none";
+
+            const sound = document.getElementById(id);
+            if (sound) {
+                sound.play().catch(e => console.error("Audio play failed:", e));
+
+                if (id === 'audio2') {
+                    happyGif.style.display = "block";
+                    sound.onended = () => { happyGif.style.display = "none"; };
+                }
+
+                if (id === 'audio4') {
+                    huhGif.style.display = "block";
+                    sound.onended = () => { huhGif.style.display = "none"; };
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
